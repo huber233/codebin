@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} | CodeBin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{{ title }}</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                {{ form.title|as_crispy_field }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.language|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.description|as_crispy_field }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.code|as_crispy_field }}
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            {{ form.is_public }}
+                            <label class="form-check-label" for="{{ form.is_public.id_for_label }}">
+                                Make this snippet public
+                            </label>
+                        </div>
+                        
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-primary me-2">Save Snippet</button>
+                            <a href="{% url 'snippet-list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add line numbers to the code editor
+        const codeEditor = document.querySelector('.code-editor');
+        if (codeEditor) {
+            codeEditor.addEventListener('keydown', function(e) {
+                // Tab key functionality
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    
+                    // Set textarea value to: text before caret + tab + text after caret
+                    this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                    
+                    // Put caret at right position again
+                    this.selectionStart = this.selectionEnd = start + 4;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

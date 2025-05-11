@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore Snippets | CodeBin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="mb-0">Explore Snippets</h1>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'snippet-create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> New Snippet
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    <form method="get" action="{% url 'snippet-search' %}" class="row g-3">
+                        <div class="col-md-8">
+                            {{ search_form.query }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ search_form.language }}
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-1"></i> Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Browse by Language</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for language in languages %}
+                        <a href="{% url 'language-snippets' language.slug %}" class="badge language-badge bg-secondary text-decoration-none">
+                            {{ language.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% if page_obj %}
+            {% for snippet in page_obj %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 snippet-card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'snippet-detail' snippet.slug %}" class="text-decoration-none text-dark">{{ snippet.title }}</a>
+                            </h5>
+                            <span class="badge language-badge mb-2">{{ snippet.language.name }}</span>
+                            
+                            {% if snippet.description %}
+                                <p class="text-muted small mb-2">{{ snippet.description|truncatechars:100 }}</p>
+                            {% endif %}
+                            
+                            <div class="code-preview">
+                                <pre><code class="language-{{ snippet.language.syntax_highlight_key }}">{{ snippet.code|truncatechars:150 }}</code></pre>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="author-info">
+                                    <span class="text-muted">by</span>
+                                    <a href="{% url 'profile-detail' snippet.author.username %}" class="text-decoration-none">
+                                        {{ snippet.author.username }}
+                                    </a>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="fas fa-eye me-1"></i> {{ snippet.views }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <div class="col-12">
+                <nav aria-label="Pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <p class="mb-0">No snippets found. Be the first to <a href="{% url 'snippet-create' %}">create a snippet</a>!</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

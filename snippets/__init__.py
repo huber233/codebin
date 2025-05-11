@@ -1,0 +1,1 @@
+# Snippets app initialization

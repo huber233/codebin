@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <h1 class="fw-bold">Share Your Code with the World</h1>
+            <p class="lead text-muted">Create, store, and showcase your code snippets for all to see. 
+            Whether it's that clever hack, elegant solution, or just a snippet you want to save for later.</p>
+            <div class="mt-4">
+                {% if user.is_authenticated %}
+                <a href="{% url 'snippet-create' %}" class="btn btn-primary btn-lg px-4 me-2">
+                    <i class="fas fa-plus-circle me-2"></i>Create Snippet
+                </a>
+                {% else %}
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 me-2">
+                    <i class="fas fa-user-plus me-2"></i>Get Started
+                </a>
+                {% endif %}
+                <a href="{% url 'snippet-list' %}" class="btn btn-outline-primary btn-lg px-4">
+                    <i class="fas fa-search me-2"></i>Explore Snippets
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row align-items-center py-5">
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-3">Why Use CodeBin?</h2>
+            <div class="mb-4">
+                <h5><i class="fas fa-eye text-primary me-2"></i>Public Sharing</h5>
+                <p>Share your code with anyone around the world. Perfect for tutorials, examples, or showing off your solutions.</p>
+            </div>
+            <div class="mb-4">
+                <h5><i class="fas fa-lock text-primary me-2"></i>Ownership Control</h5>
+                <p>Only you can edit or delete your snippets after signing in. Full control over your content.</p>
+            </div>
+            <div class="mb-4">
+                <h5><i class="fas fa-code text-primary me-2"></i>Syntax Highlighting</h5>
+                <p>Beautiful syntax highlighting for over 100 programming languages makes your code look professional.</p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-lg rounded">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>example.py</span>
+                        <div>
+                            <span class="badge bg-light text-dark me-2">Python</span>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <pre class="line-numbers m-0"><code class="language-python">def fibonacci(n):
+    """
+    Generate the Fibonacci sequence up to n
+    """
+    a, b = 0, 1
+    result = []
+    while a < n:
+        result.append(a)
+        a, b = b, a + b
+    return result
+
+# Example usage
+sequence = fibonacci(100)
+print(f"Fibonacci sequence: {sequence}")
+
+# Output: Fibonacci sequence: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="my-5">
+    
+    <div class="row align-items-center py-5">
+        <div class="col-lg-6 order-lg-2">
+            <h2 class="fw-bold mb-3">Features That Make Coding Better</h2>
+            <div class="mb-4">
+                <h5><i class="fas fa-search text-secondary me-2"></i>Easy Search</h5>
+                <p>Find the code you need quickly with powerful search functionality.</p>
+            </div>
+            <div class="mb-4">
+                <h5><i class="fas fa-tags text-secondary me-2"></i>Language Categorization</h5>
+                <p>Browse snippets by programming language to find exactly what you're looking for.</p>
+            </div>
+            <div class="mb-4">
+                <h5><i class="fas fa-users text-secondary me-2"></i>User Profiles</h5>
+                <p>Follow other coders and discover their snippets all in one place.</p>
+            </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 snippet-card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">React useState Hook</h5>
+                            <span class="badge language-badge mb-2">JavaScript</span>
+                            <div class="code-preview">
+<pre><code class="language-javascript">import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 snippet-card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">CSS Flexbox Center</h5>
+                            <span class="badge language-badge mb-2">CSS</span>
+                            <div class="code-preview">
+<pre><code class="language-css">.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.item {
+  width: 200px;
+  height: 200px;
+  background-color: #4A6FFF;
+  border-radius: 8px;
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="my-5">
+    
+    <section class="py-5 text-center">
+        <h2 class="fw-bold mb-4">Ready to Share Your Code?</h2>
+        <p class="lead text-muted mb-4">Join our community of developers sharing knowledge through code.</p>
+        <div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'snippet-create' %}" class="btn btn-primary btn-lg px-4 me-2">
+                <i class="fas fa-plus-circle me-2"></i>Create Snippet
+            </a>
+            {% else %}
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 me-2">
+                <i class="fas fa-user-plus me-2"></i>Sign Up Now
+            </a>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg px-4">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
