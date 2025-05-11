@@ -5,8 +5,8 @@ import os
 import sys
 from pathlib import Path
 
-# Chemin vers le projet avec le nom d'utilisateur GitHub
-path = '/home/huber233/codebin'
+# Chemin vers le projet sur PythonAnywhere
+path = '/home/codingsite/codebin'
 if path not in sys.path:
     sys.path.append(path)
 
