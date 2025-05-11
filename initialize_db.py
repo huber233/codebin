@@ -16,7 +16,7 @@ def initialize_languages():
         {'name': 'CSS', 'syntax_highlight_key': 'css'},
         {'name': 'Java', 'syntax_highlight_key': 'java'},
         {'name': 'C++', 'syntax_highlight_key': 'cpp'},
-        {'name': 'C#', 'syntax_highlight_key': 'csharp'},
+        {'name': 'C#', 'syntax_highlight_key': 'csharp', 'slug': 'csharp'},  # Slug personnalisé pour C#
         {'name': 'PHP', 'syntax_highlight_key': 'php'},
         {'name': 'Ruby', 'syntax_highlight_key': 'ruby'},
         {'name': 'Swift', 'syntax_highlight_key': 'swift'},
@@ -34,12 +34,15 @@ def initialize_languages():
     
     for lang_data in languages:
         try:
+            # Utiliser le slug personnalisé s'il existe, sinon le générer
+            defaults = {
+                'syntax_highlight_key': lang_data['syntax_highlight_key'],
+                'slug': lang_data.get('slug') or slugify(lang_data['name'])
+            }
+            
             Language.objects.get_or_create(
                 name=lang_data['name'],
-                defaults={
-                    'syntax_highlight_key': lang_data['syntax_highlight_key'],
-                    'slug': slugify(lang_data['name'])
-                }
+                defaults=defaults
             )
         except Exception as e:
             print(f"Error creating {lang_data['name']}: {str(e)}")
