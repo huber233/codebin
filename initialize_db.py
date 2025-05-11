@@ -53,8 +53,8 @@ def initialize_languages():
 
 def create_superuser():
     if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'admin@example.com', 'adminpassword')
-        print("Superuser created: admin / adminpassword")
+        User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+        print("Superuser created: admin / admin")
 
 
 if __name__ == '__main__':
